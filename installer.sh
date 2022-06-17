@@ -6,9 +6,9 @@
 # ./installer.sh -u dir_name    uninstall dir
 # ./installer.sh -r path        reinstall 
 
-#  
-# -i somepath   
-# -r somepath                      удалять из старого места файлы?
+#  SCRIPT OPTIONS
+# -i /path                      install to /path
+# -r /path                      удалять из старого места файлы?
 # -u program_name 
 # -i 
 # -r 
@@ -20,7 +20,7 @@
 
 if [ $# -eq 2 ];  then
 
-    if [ $1 = "install" ]; then
+    if [ "$1" = "-i" ]; then
         # install to clients path 
         [ ! -d $2 ] && echo "Directory $2 does not exists." && exit 1
         DIR=`pwd`
@@ -28,9 +28,9 @@ if [ $# -eq 2 ];  then
     
         cd .. && SRCDIR=`pwd` && mv $DIR $2
         cd $SRCDIR && tar cvzf $DIRNAME.tar.gz $2/$DIRNAME > ~/.my-settings-$DIRNAME 
-        #mv ~/my-settings-$DIRNAME ~/.my-settings-$DIRNAME
 
-    elif [ $1 = "reinstall" ]; then
+
+    elif [ "$1" = "-r" ]; then
             # what if reinstal in current dir
             DIR=`pwd`
             DIRNAME=${PWD##*/}
@@ -51,13 +51,12 @@ if [ $# -eq 2 ];  then
                 cd $SRCDIR && tar cvzf $DIRNAME.tar.gz $2/$DIRNAME > ~/.my-settings-$DIRNAME 
             fi
         
-    elif [ $1 = "uninstall" ]; then
+    elif [ "$1" = "-u" ]; then
         # uninstall 
         # TODO spaces in dir name
         [ ! -e ~/.my-settings-$2 ] && echo "Settings file for $2 does not exists. It was missed or the programm wasn\`t installed yet" && exit 1
         
-        if [ -f ~/.my-settings-$2-old ]; then
-            echo "OOps"
+        if [ -e ~/.my-settings-$2-old ]; then
             DIRPATH=`head -n 1 ~/.my-settings-$2`
             OLDDIRPATH=`head -n 1 ~/.my-settings-$2-old`
             rm -R $DIRPATH
@@ -65,7 +64,7 @@ if [ $# -eq 2 ];  then
             rm ~/.my-settings-$2
             rm ~/.my-settings-$2-old
 
-        elif [ ! -f ~/.my-settings-$2-old ]; then
+        elif [ ! -e ~/.my-settings-$2-old ]; then
             DIRPATH=`head -n 1 ~/.my-settings-$2`
             rm -R $DIRPATH
             rm ~/.my-settings-$2
@@ -79,7 +78,7 @@ if [ $# -eq 2 ];  then
 
 elif [ $# -eq 1 ];  then
 
-  if [ "$1" = "install" ]; then
+  if [ "$1" = "-i" ]; then
         # install to ~/local 
         DIR=`pwd`
         DIRNAME=${PWD##*/}      
@@ -87,7 +86,7 @@ elif [ $# -eq 1 ];  then
         cd .. && SRCDIR=`pwd` && mv $DIR ~/local
         cd $SRCDIR && tar cvzf $DIRNAME.tar.gz ~/local/$DIRNAME > ~/.my-settings-$DIRNAME 
 
-  elif [ "$1" = "reinstall" ]; then
+  elif [ "$1" = "-r" ]; then
         DIR=`pwd`
         DIRNAME=${PWD##*/}
         [ ! -e ~/.my-settings-$DIRNAME ] && echo "Settings file for $2 does not exists. It was missed or the programm wasn\`t installed yet" && exit 1
@@ -110,8 +109,8 @@ elif [ $# -eq 1 ];  then
       echo "Wrong arguments was supplied"
   fi  
 
-elif [ $# - gt 2 ]; then
-    echo "Too many arguments was supplied"    
+elif [ $# - gt 2 ] || [ $# - lt 1 ]; then
+    echo "Wrong arguments was supplied"    
 fi
 
 
