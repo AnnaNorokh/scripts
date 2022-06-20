@@ -1,4 +1,5 @@
 #!/bin/bash
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 PURPLE='\033[0;35m'
@@ -10,6 +11,13 @@ echo -e "${PURPLE}INSTALATION${NC}"
 [ -e ~/.my-settings-test ]; echo -e "MY-SETTINGS CREATED    ${GREEN}OK${NC} " || echo -e "MY-SETTINGS CREATED ${RED}FAILED${NC}"
 [ -e ~/test.tar.gz ]; echo -e "TAR CREATED            ${GREEN}OK${NC} " || echo -e "TAR CREATED ${RED}FAILED${NC}"
 [ -d ~/backup/test ]; echo -e "DIR INSTALLED          ${GREEN}OK${NC} \n" || echo -e "${RED}FAILED${NC}\n"
+
+cd ~/backup/test && ~/ramp_up/installer.sh -r ~/backup
+[ "$#" == "1" ]; echo -e "${GREEN}OK${NC} \n" || echo -e "${RED}FAILED${NC} \n"
+cd ~/backup && ~/ramp_up/installer.sh -r ~/backup
+[ "$#" == "1" ]; echo -e "${GREEN}OK${NC} \n" || echo -e "${RED}FAILED${NC} \n"
+cd ~/backup/test && ~/ramp_up/installer.sh -r ~/backup123
+[ "$#" == "1" ]; echo -e "${GREEN}OK${NC} \n" || echo -e "${RED}FAILED${NC} \n"
 
 cd ~/backup/test && ~/ramp_up/installer.sh -r ~/Files
 
@@ -28,3 +36,19 @@ echo -e "\n${PURPLE}UNINSTALATION${NC}"
 
 #Return enviroment
 tar -xzf ~/test.tar.gz -C ~ && mv ~/home/anna/backup/test ~/test && rm -R ~/home && rm ~/test.tar.gz
+
+cd ~/test && ~/ramp_up/installer.sh -i 
+
+echo -e "${PURPLE}INSTALATION to ~/local${NC}"
+[ -e ~/.my-settings-test ]; echo -e "MY-SETTINGS CREATED    ${GREEN}OK${NC} " || echo -e "MY-SETTINGS CREATED ${RED}FAILED${NC}"
+[ -e ~/test.tar.gz ]; echo -e "TAR CREATED            ${GREEN}OK${NC} " || echo -e "TAR CREATED ${RED}FAILED${NC}"
+[ -d ~/local/test ]; echo -e "DIR INSTALLED          ${GREEN}OK${NC} \n" || echo -e "${RED}FAILED${NC}\n"
+
+cd ~/backup/test && ~/ramp_up/installer.sh -r
+
+echo -e "\n${PURPLE}REINSTALATION  to ~/local${NC}"
+[ -e ~/.my-settings-test-old ]; echo -e "MY-SETTINGS-OLD CREATED ${GREEN}OK${NC} " || echo -e "MY-SETTINGS-OLD CREATED ${RED}FAILED${NC}"
+[ -e ~/.my-settings-test ]; echo -e "MY-SETTINGS CREATED     ${GREEN}OK${NC} " || echo -e "MY-SETTINGS CREATED     ${RED}FAILED${NC}"
+[ -d ~/Files/test ]; echo -e "DIR INSTALLED           ${GREEN}OK${NC} \n" || echo -e "DIR INSTALLED           ${RED}FAILED${NC}\n"
+
+#~/ramp_up/installer.sh -u test

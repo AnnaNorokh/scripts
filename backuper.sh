@@ -1,5 +1,13 @@
 #!/bin/bash
-#
+
+# Author : Anna Norokh
+# Description
+# Creates (or restore) backup for dir (by archiving). Specifies the the date and time in archive name. Restoring dir to source dir.
+
+# Usage
+# ./backuper.sh create
+# ./backuper.sh restore dir_name
+
 
 BACKUP_DIR=~/backup
 PROJ_DIR=~/ramp_up
